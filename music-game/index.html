@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Game</title>
+  </head>
+  <body>
+    <audio class="song" src="song.mp3"></audio>
+    <div id="game">
+      <div class="note-tracks">
+        <div class="note-track"></div>
+        <div class="note-track"></div>
+        <div class="note-track"></div>
+        <div class="note-track"></div>
+        <div class="note-track"></div>
+      </div>
+      <div class="keys">
+        <div class="key"><span class="key-label">C</span></div>
+        <div class="key"><span class="key-label">V</span></div>
+        <div class="key" id="start"><span class="key-label">Start</span></div>
+        <div class="key"><span class="key-label">N</span></div>
+        <div class="key"><span class="key-label">M</span></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
