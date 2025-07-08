@@ -7,20 +7,30 @@
   </head>
   <body>
     <audio class="song" src="song.mp3"></audio>
-    <div id="game">
-      <div class="note-tracks">
-        <div class="note-track"></div>
-        <div class="note-track"></div>
-        <div class="note-track"></div>
-        <div class="note-track"></div>
-        <div class="note-track"></div>
+    <div id="game" class="game">
+      <div class="game__note-tracks">
+        <div class="game__note-tracks__track"></div>
+        <div class="game__note-tracks__track"></div>
+        <div class="game__note-tracks__track"></div>
+        <div class="game__note-tracks__track"></div>
+        <div class="game__note-tracks__track"></div>
       </div>
-      <div class="keys">
-        <div class="key"><span class="key-label">C</span></div>
-        <div class="key"><span class="key-label">V</span></div>
-        <div class="key" id="start"><span class="key-label">Start</span></div>
-        <div class="key"><span class="key-label">N</span></div>
-        <div class="key"><span class="key-label">M</span></div>
+      <div class="game__keys">
+        <div class="game__keys__key">
+          <span class="game__keys__key-label">C</span>
+        </div>
+        <div class="game__keys__key">
+          <span class="game__keys__key-label">V</span>
+        </div>
+        <div class="game__keys__key" id="start">
+          <span class="game__keys__key-label">Start</span>
+        </div>
+        <div class="game__keys__key">
+          <span class="game__keys__key-label">N</span>
+        </div>
+        <div class="game__keys__key">
+          <span class="game__keys__key-label">M</span>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
