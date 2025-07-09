@@ -7,29 +7,32 @@
   </head>
   <body>
     <audio class="song" src="song.mp3"></audio>
-    <div id="game" class="game">
-      <div class="game__note-tracks">
-        <div class="game__note-tracks__track"></div>
-        <div class="game__note-tracks__track"></div>
-        <div class="game__note-tracks__track"></div>
-        <div class="game__note-tracks__track"></div>
-        <div class="game__note-tracks__track"></div>
-      </div>
-      <div class="game__keys">
-        <div class="game__keys__key">
-          <span class="game__keys__key-label">C</span>
+    <div class="container">
+      <div class="instructions"><p class="para">Press b to start!</p></div>
+      <div class="game">
+        <div class="game__note-tracks">
+          <div class="game__note-track"></div>
+          <div class="game__note-track"></div>
+          <div class="game__note-track"></div>
+          <div class="game__note-track"></div>
+          <div class="game__note-track"></div>
         </div>
-        <div class="game__keys__key">
-          <span class="game__keys__key-label">V</span>
-        </div>
-        <div class="game__keys__key" id="start">
-          <span class="game__keys__key-label">Start</span>
-        </div>
-        <div class="game__keys__key">
-          <span class="game__keys__key-label">N</span>
-        </div>
-        <div class="game__keys__key">
-          <span class="game__keys__key-label">M</span>
+        <div class="game__keys">
+          <div class="game__key" data-key="c">
+            <span class="game__key-label">C</span>
+          </div>
+          <div class="game__key" data-key="v">
+            <span class="game__key-label">V</span>
+          </div>
+          <div class="game__key game__key--start" data-key="b">
+            <span class="game__key-label" id="start-label">Start</span>
+          </div>
+          <div class="game__key" data-key="n">
+            <span class="game__key-label">N</span>
+          </div>
+          <div class="game__key" data-key="m">
+            <span class="game__key-label">M</span>
+          </div>
         </div>
       </div>
     </div>

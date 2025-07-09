@@ -1,65 +1,111 @@
 body {
   margin: 0;
+  padding: 0;
   background: #121212;
   font-family: Helvetica;
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+}
+
+.para {
+  display: flex;
+  align-items: left;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100vh;
+  width: 100vw;
+  gap: 2rem;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  padding-right: 13vw;
+}
+
+.instructions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  .para {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #c8c7d6;
+    margin: 0;
+  }
 }
 
 .game {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
+  justify-content: center;
+  padding: 1rem;
 
   &__note-tracks {
     display: flex;
-    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 0;
+  }
 
-    &__track {
-      width: 60px;
-      height: 90vh;
-      background: #1e1e1e;
-      border: 2px solid #555;
-      position: relative;
-    }
+  &__note-track {
+    width: 70px;
+    height: 90vh;
+    background-color: #2a2828;
+    border: 1px solid #ccc;
+    margin: 0 4px;
   }
 
   &__keys {
     display: flex;
-    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+  }
 
-    &__key {
-      width: 60px;
-      height: 60px;
-      background: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: background 0.2s;
+  &__key {
+    width: 70px;
+    height: 60px;
+    background-color: #444;
+    color: #fff;
+    margin: 0 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1px;
+    font-weight: bold;
+    border: 1px solid #ccc;
 
-      &:hover {
-        background: #555;
-      }
+    &-label {
+      font-size: 1rem;
+    }
 
-      &-label {
-        font-size: 1.2rem;
-        font-weight: bold;
-      }
+    &--start {
+      background-color: #1e90ff;
+    }
+    &--active {
+      background-color: #666;
     }
   }
 }
 
 @media (max-width: 768px) {
-  .game__keys__key-label {
+  .container {
+    padding-right: 0;
+  }
+  .game__key-label {
     display: none;
   }
 
-  #start .game__keys__key-label {
+  #start-label {
     display: inline;
+  }
+  .instructions {
+    display: none;
   }
 }
