@@ -6,7 +6,7 @@
     <title>Music Game</title>
   </head>
   <body>
-    <audio class="song" src="song.mp3"></audio>
+    <audio class="song" src="Shmoopie.mp3"></audio>
     <div class="container">
       <div class="instructions"><p class="para">Press b to start!</p></div>
       <div class="game">
@@ -17,25 +17,26 @@
           <div class="game__note-track"></div>
           <div class="game__note-track"></div>
         </div>
-        <div class="game__keys">
-          <div class="game__key" data-key="c">
-            <span class="game__key-label">C</span>
+        <div class="game__zones">
+          <div class="game__zone" data-key="c">
+            <span class="game__zone-label">C</span>
           </div>
-          <div class="game__key" data-key="v">
-            <span class="game__key-label">V</span>
+          <div class="game__zone" data-key="v">
+            <span class="game__zone-label">V</span>
           </div>
-          <div class="game__key game__key--start" data-key="b">
-            <span class="game__key-label" id="start-label">Start</span>
+          <div class="game__zone game__zone--start" data-key="b">
+            <span class="game__zone_key-label" id="start-label">Start</span>
           </div>
-          <div class="game__key" data-key="n">
-            <span class="game__key-label">N</span>
+          <div class="game__zone" data-key="n">
+            <span class="game__zone-label">N</span>
           </div>
-          <div class="game__key" data-key="m">
-            <span class="game__key-label">M</span>
+          <div class="game__zone" data-key="m">
+            <span class="game__zone-label">M</span>
           </div>
         </div>
       </div>
     </div>
+    <img src="src/icon.png" alt="pause icon" class="pause-icon" />
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

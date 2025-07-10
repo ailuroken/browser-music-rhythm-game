@@ -1,7 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  background: #121212;
+
+  background-color: #1a1a1a;
   font-family: Helvetica;
   color: #fff;
   display: flex;
@@ -35,7 +36,7 @@ body {
   .para {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #c8c7d6;
+    color: #ffffff;
     margin: 0;
   }
 }
@@ -61,14 +62,22 @@ body {
     border: 1px solid #ccc;
     margin: 0 4px;
   }
-
-  &__keys {
+  .note {
+    width: 20%;
+    height: 50px;
+    position: absolute;
+    bottom: 100%;
+    background: #628cca;
+    border-radius: 10px;
+    animation: fall 2s linear forwards;
+  }
+  &__zones {
     display: flex;
     justify-content: center;
     width: 100%;
   }
 
-  &__key {
+  &__zone {
     width: 70px;
     height: 60px;
     background-color: #444;
@@ -92,13 +101,24 @@ body {
       background-color: #666;
     }
   }
+  @keyframes fall {
+    to {
+      transform: translateY(100vh);
+    }
+  }
+}
+
+.pause-icon {
+  width: 50px;
+  filter: invert(1);
+  transform: translate(-280px, -240px);
 }
 
 @media (max-width: 768px) {
   .container {
     padding-right: 0;
   }
-  .game__key-label {
+  .game__zone-label {
     display: none;
   }
 
