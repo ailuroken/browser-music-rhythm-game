@@ -4,7 +4,8 @@ const isMobile = () => /Mobi|Android/i.test(navigator.userAgent);
 
 const startLabel = document.getElementById("start-label");
 const startKey = document.querySelector(".game__zone--start");
-const tracks = document.querySelectorAll<HTMLDivElement>(".game__note--track");
+const tracks = document.querySelectorAll<HTMLDivElement>(".game__note-track");
+let inGame = false;
 
 interface Note {
   time: number;
@@ -32,14 +33,30 @@ const createNote = ({ lane }: Note) => {
 };
 
 const startGame = () => {
+  document.querySelectorAll(".note").forEach((el) => el.remove());
+
   audio.currentTime = 0;
   audio.play();
-  notes.forEach((note) => setTimeout(() => createNote(note), note.time));
+
+  notes.forEach((note) => {
+    setTimeout(() => createNote(note), note.time);
+  });
 };
 
 const togglePause = () => {
-  isPaused = audio.paused;
-  isPaused ? audio.play() : audio.pause();
+  if (audio.paused) {
+    audio.play();
+    document
+      .querySelectorAll(".note")
+      .forEach((note) => note.classList.remove("note--paused"));
+    isPaused = false;
+  } else {
+    audio.pause();
+    document
+      .querySelectorAll(".note")
+      .forEach((note) => note.classList.add("note--paused"));
+    isPaused = true;
+  }
 };
 
 const activateKey = (key: string) => {
@@ -55,16 +72,28 @@ const updateStartLabelForKeyboard = () => {
       startLabel!.textContent = "Start";
     }, 168000);
   }
-  startGame();
 };
 
 document.addEventListener("keydown", ({ key }) => {
-  const lowerKey = key;
+  const lowerKey = key.toLowerCase();
 
-  if (lowerKey === "b") updateStartLabelForKeyboard();
+  if (lowerKey === "b") {
+    if (!inGame || audio.paused) {
+      inGame = true;
+      startGame();
+    }
+    updateStartLabelForKeyboard();
+  }
+
   if (lowerKey === "p") togglePause();
 
   activateKey(lowerKey);
+});
+
+const pauseBtn = document.getElementById("pause-btn");
+
+pauseBtn?.addEventListener("click", () => {
+  togglePause();
 });
 
 document.querySelectorAll(".game__zone").forEach((el) => {
@@ -72,11 +101,11 @@ document.querySelectorAll(".game__zone").forEach((el) => {
   el.addEventListener("click", handleKeyTap);
 });
 
-function handleKeyTap(e: Event) {
+const handleKeyTap = (e: Event) => {
   const target = e.currentTarget as HTMLElement;
   const key = target.dataset.key;
   if (key) activateKey(key);
-}
+};
 
 window.addEventListener("touchstart", startGame, { once: true });
 
