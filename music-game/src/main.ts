@@ -1,4 +1,6 @@
 import "./style.scss";
+import type { Note } from "./notes";
+import { notes } from "./notes";
 
 const isMobile = () => /Mobi|Android/i.test(navigator.userAgent);
 
@@ -6,56 +8,79 @@ const startLabel = document.getElementById("start-label");
 const startKey = document.querySelector(".game__zone--start");
 const tracks = document.querySelectorAll<HTMLDivElement>(".game__note-track");
 let inGame = false;
-
-interface Note {
-  time: number;
-  lane: number;
-}
-
-const notes: Note[] = [
-  { time: 1000, lane: 0 },
-  { time: 1500, lane: 1 },
-  { time: 2000, lane: 2 },
-  { time: 2500, lane: 3 },
-  { time: 3000, lane: 4 },
-];
+let isPaused = false;
+let pauseStartTime = 0;
+let totalPausedDuration = 0;
+let gameStartTime = 0;
+let lastFrameTime = 0;
+let animationFrameId: number;
+const spawnedNotes = new Set<number>();
+let startLabelTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const audio = new Audio("Shmoopie.mp3");
 audio.volume = 0.1;
 
-let isPaused = false;
+const gameLoop = (currentTime: number) => {
+  if (isPaused) return;
+
+  const elapsed = currentTime - gameStartTime - totalPausedDuration;
+
+  notes.forEach((note, index) => {
+    if (!spawnedNotes.has(index) && elapsed >= note.time) {
+      createNote(note);
+      spawnedNotes.add(index);
+    }
+  });
+
+  animationFrameId = requestAnimationFrame(gameLoop);
+};
+
+const startGame = () => {
+  if (!inGame || audio.paused) {
+    inGame = true;
+    isPaused = false;
+
+    document.querySelectorAll(".note").forEach((el) => el.remove());
+    spawnedNotes.clear();
+
+    audio.currentTime = 0;
+    audio.play();
+
+    gameStartTime = performance.now();
+    lastFrameTime = gameStartTime;
+    requestAnimationFrame(gameLoop);
+  }
+};
 
 const createNote = ({ lane }: Note) => {
   const noteEl = document.createElement("div");
   noteEl.classList.add("note");
   noteEl.style.animation = "fall 2s linear";
+  noteEl.style.animationPlayState = isPaused ? "paused" : "running";
   tracks[lane]?.appendChild(noteEl);
 };
 
-const startGame = () => {
-  document.querySelectorAll(".note").forEach((el) => el.remove());
-
-  audio.currentTime = 0;
-  audio.play();
-
-  notes.forEach((note) => {
-    setTimeout(() => createNote(note), note.time);
-  });
-};
-
 const togglePause = () => {
-  if (audio.paused) {
-    audio.play();
-    document
-      .querySelectorAll(".note")
-      .forEach((note) => note.classList.remove("note--paused"));
-    isPaused = false;
-  } else {
-    audio.pause();
-    document
-      .querySelectorAll(".note")
-      .forEach((note) => note.classList.add("note--paused"));
+  if (!isPaused) {
     isPaused = true;
+    pauseStartTime = performance.now();
+    audio.pause();
+    cancelAnimationFrame(animationFrameId);
+
+    document.querySelectorAll<HTMLElement>(".note").forEach((note) => {
+      note.style.animationPlayState = "paused";
+    });
+  } else {
+    isPaused = false;
+    const now = performance.now();
+    totalPausedDuration += now - pauseStartTime;
+    audio.play();
+
+    document.querySelectorAll<HTMLElement>(".note").forEach((note) => {
+      note.style.animationPlayState = "running";
+    });
+
+    requestAnimationFrame(gameLoop);
   }
 };
 
@@ -68,9 +93,12 @@ const activateKey = (key: string) => {
 const updateStartLabelForKeyboard = () => {
   if (!isMobile() && startLabel) {
     startLabel.textContent = "B";
-    setTimeout(() => {
-      startLabel!.textContent = "Start";
-    }, 168000);
+
+    if (startLabelTimeout) clearTimeout(startLabelTimeout);
+
+    startLabelTimeout = setTimeout(() => {
+      if (!inGame) startLabel!.textContent = "Start";
+    }, 30000);
   }
 };
 
@@ -90,6 +118,20 @@ document.addEventListener("keydown", ({ key }) => {
   activateKey(lowerKey);
 });
 
+const handleKeyTap = (e: Event) => {
+  const target = e.currentTarget as HTMLElement;
+  const key = target.dataset.key;
+  if (key) activateKey(key);
+};
+
+const endGame = () => {
+  inGame = false;
+
+  if (startLabel) {
+    startLabel.textContent = "Start";
+  }
+};
+
 const pauseBtn = document.getElementById("pause-btn");
 
 pauseBtn?.addEventListener("click", () => {
@@ -101,12 +143,10 @@ document.querySelectorAll(".game__zone").forEach((el) => {
   el.addEventListener("click", handleKeyTap);
 });
 
-const handleKeyTap = (e: Event) => {
-  const target = e.currentTarget as HTMLElement;
-  const key = target.dataset.key;
-  if (key) activateKey(key);
-};
-
 window.addEventListener("touchstart", startGame, { once: true });
 
 startKey?.addEventListener("click", startGame);
+
+audio.addEventListener("ended", () => {
+  endGame();
+});
