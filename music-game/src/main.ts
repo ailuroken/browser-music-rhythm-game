@@ -10,15 +10,40 @@ const tracks = document.querySelectorAll<HTMLDivElement>(".game__note-track");
 let inGame = false;
 let isPaused = false;
 let pauseStartTime = 0;
-let totalPausedDuration = 0;
-let gameStartTime = 0;
 let lastFrameTime = 0;
+let gameStartTime = 0;
+let totalPausedDuration = 0;
 let animationFrameId: number;
 const spawnedNotes = new Set<number>();
 let startLabelTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const audio = new Audio("Shmoopie.mp3");
 audio.volume = 0.1;
+
+const startGame = async () => {
+  if (!inGame || audio.paused) {
+    isPaused = false;
+    totalPausedDuration = 0;
+    pauseStartTime = 0;
+
+    document.querySelectorAll(".note").forEach((el) => el.remove());
+    spawnedNotes.clear();
+
+    audio.currentTime = 0;
+
+    try {
+      await audio.play();
+      gameStartTime = performance.now();
+      lastFrameTime = gameStartTime;
+
+      inGame = true;
+
+      requestAnimationFrame(gameLoop);
+    } catch (err) {
+      console.error("Audio playback failed:", err);
+    }
+  }
+};
 
 const gameLoop = (currentTime: number) => {
   if (isPaused) return;
@@ -35,28 +60,14 @@ const gameLoop = (currentTime: number) => {
   animationFrameId = requestAnimationFrame(gameLoop);
 };
 
-const startGame = () => {
-  if (!inGame || audio.paused) {
-    inGame = true;
-    isPaused = false;
-
-    document.querySelectorAll(".note").forEach((el) => el.remove());
-    spawnedNotes.clear();
-
-    audio.currentTime = 0;
-    audio.play();
-
-    gameStartTime = performance.now();
-    lastFrameTime = gameStartTime;
-    requestAnimationFrame(gameLoop);
-  }
-};
-
 const createNote = ({ lane }: Note) => {
   const noteEl = document.createElement("div");
   noteEl.classList.add("note");
+
+  void noteEl.offsetWidth;
   noteEl.style.animation = "fall 2s linear";
   noteEl.style.animationPlayState = isPaused ? "paused" : "running";
+
   tracks[lane]?.appendChild(noteEl);
 };
 
@@ -74,6 +85,7 @@ const togglePause = () => {
     isPaused = false;
     const now = performance.now();
     totalPausedDuration += now - pauseStartTime;
+
     audio.play();
 
     document.querySelectorAll<HTMLElement>(".note").forEach((note) => {
@@ -106,8 +118,7 @@ document.addEventListener("keydown", ({ key }) => {
   const lowerKey = key.toLowerCase();
 
   if (lowerKey === "b") {
-    if (!inGame || audio.paused) {
-      inGame = true;
+    if (!inGame || isPaused || audio.paused) {
       startGame();
     }
     updateStartLabelForKeyboard();
