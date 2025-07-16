@@ -10,7 +10,6 @@ const tracks = document.querySelectorAll<HTMLDivElement>(".game__note-track");
 let inGame = false;
 let isPaused = false;
 let pauseStartTime = 0;
-let lastFrameTime = 0;
 let gameStartTime = 0;
 let totalPausedDuration = 0;
 let animationFrameId: number;
@@ -34,7 +33,6 @@ const startGame = async () => {
     try {
       await audio.play();
       gameStartTime = performance.now();
-      lastFrameTime = gameStartTime;
 
       inGame = true;
 
