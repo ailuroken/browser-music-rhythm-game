@@ -35,21 +35,19 @@ jobs:
         with:
           node-version: lts/*
           cache: "npm"
-          cache-dependency-path: music-game/package-lock.json
+          cache-dependency-path: /package-lock.json
 
       - name: Install dependencies
-        working-directory: music-game
         run: npm ci
       - name: Build
         run: npm run build
-        working-directory: music-game
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
-          path: "music-game/dist"
+          path: "/dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
