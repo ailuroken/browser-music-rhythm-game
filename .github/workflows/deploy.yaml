@@ -42,6 +42,7 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        working-directory: music-game
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
