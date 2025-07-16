@@ -10,22 +10,13 @@ A browser game optimised for mobile made using HTML, SCSS and Typescript. Tap on
 
 Hope to add more songs in the future!
 
-## Features
+## 🎮 Features
 
 - Keyboard and touch support
 - Responsive design
 - Animated beats with synced timing
 - Game start/reset logic
 - Pause and unpause
-
-## 🎮 Features
-
-- Keyboard and touch support
-- Custom SCSS styling
-- Responsive design
-- Animated beats with synced timing
-- Game start/reset logic
-- Audio controls
 
 ## 🛠️ Technologies Used
 
