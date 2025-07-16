@@ -35,7 +35,10 @@ jobs:
         with:
           node-version: lts/*
           cache: "npm"
+          cache-dependency-path: music-game/package-lock.json
+
       - name: Install dependencies
+        working-directory: music-game
         run: npm ci
       - name: Build
         run: npm run build
