@@ -3,7 +3,7 @@ import type { Note } from "./notes";
 import { notes } from "./notes";
 
 const isMobile = () =>
-  /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
 const startLabel = document.getElementById("start-label");
 const startKey = document.querySelector(".game__zone--start");
